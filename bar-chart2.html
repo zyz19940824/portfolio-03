@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Exercise Portfolio</title>
+  <style>
+  bar {
+    fill: brown;
+  }
+  text {
+    stroke: black;
+  }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <!-- ADD YOUR NAME -->
+    <h1>YAOZHI ZHANG: Exercise Portfolio 3</h1>
+  </header>
+
+  <div id="content">
+
+    <nav>
+      <ul>
+        <li><a href="index.html">Return to Main Page</a></li>
+      </ul>
+    </nav>
+
+    <main>
+
+      <h2>Line Chart for APPLE closing sales</h2>
+
+      <p>This data set provides monthly stock information for Apple Inc. (AAPL) from Jan. 1, 1996 to March 1, 2019. Provide points which identify the following events:
+
+        <ol>
+          <li>August 1998: Apple introduces iMac</li>
+          <li>June 2007: Apple introduces iPhone</li>
+          <li>April 2010: Apple introduces iPad</li>
+          <li>August 2018: Apple becomes a trillion-dollar company</li>
+        </ol>
+      </p>
+
+      <!-- ADD YOUR VISUALIZATION HERE -->
+
+    </main>
+  </div>
+
+  <script src="js/d3.min.js"></script>
+  <script src="js/lodash.min.js"></script>
+  <script>
+  var margin = {top: 20, right: 20, bottom: 30, left: 40},
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+    d3.csv("data/spring-training.csv").then(function(data) {
+
+
+      var league = _.groupBy(data, 'league');
+      // console.log(league);
+
+      var grapefruit = _.groupBy(league["G"], 'pct');
+      console.log(grapefruit);
+
+      var cactus = _.groupBy(league["C"], 'pct');
+      // console.log(cactus);
+
+
+      var svg = d3.select("body").append("svg")
+        .attr("width", w)
+        .attr("height", h);
+
+      var xScale = d3.scaleBand().range([0, w]).padding(0.2).round(true);
+        // .domain([d3.max(grapefruit, function(d) {
+        //   return d.abbr;
+        // })])
+        // .range([padding, w - padding]);
+
+      var yScale = d3.scaleLinear()
+        .domain([0, d3.max(grapefruit, function(d) {
+          return d.wins;
+        })])
+        .range([h, 0]);
+
+        var bar = svg.selectAll("g")
+             .data(grapefruit)
+           .enter()
+           .append("g")
+             .attr("transform", function(d) { return "translate(" + xScale(d.abbr) + ",0)"; });
+
+
+
+         bar.append("rect")
+             .attr("y", function(d) { return yScale(d.wins); })
+             .attr("height", function(d) { return h - yScale(d.wins); })
+
+             .attr("width", xScale.bandwidth());
+
+
+
+// var bars = svg.selectAll("rect")
+//         .data(grapefruit)
+//         .enter()
+//         .append("rect")
+//         .attr("width", 30)
+//         .attr("x", function(d, i) {
+//           return (i * xScale);
+//         })
+//         .attr("y", function(d) {return yScale});
+
+
+
+        // function parseName(team) {
+        //   var name = team.split(" ");
+        //   return name[0].charAt(0) + name[1].charAt(0)
+        // }
+
+
+
+
+
+
+    });
+  </script>
+</body>
+
+</html>
